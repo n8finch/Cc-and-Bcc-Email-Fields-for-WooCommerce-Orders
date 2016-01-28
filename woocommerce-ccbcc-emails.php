@@ -143,24 +143,15 @@ function ccbcc_meta_box_callback( $post ) {
  * https://github.com/woothemes/woocommerce/issues/6978
  -------------------------------------------*/
 
-
-// add_filter( 'woocommerce_email_recipient_customer_processing_order', 'ecck_email_recipient_processing_function', 10, 2);
-//
-// function ecck_email_recipient_processing_function($recipient, $object) {
-// 	$order_id = $object->post->ID;
-// 	$additional_recipiants = get_post_meta( $order_id, '', true );
-// 	$recipient = $recipient . ', ' . 'natefinch@gmail.com';
-// 	return $recipient;
-// }
-
-
 add_filter( 'woocommerce_email_headers', 'add_myself_as_cc', 10, 2);
 
-function add_myself_as_cc($headers, $id, $object) {
-		$additional_recipiants = get_post_meta( $id, '', true );
-		pr($additional_recipiants);
-    $headers .= 'Cc: n8ccfinch@gmail.com' . "\r\n";
-    $headers .= 'Bcc: ' . $object . "\r\n";
+function add_myself_as_cc($headers, $id, $object, $arg1 , $arg2) {
+    
+		$postID = get_the_ID();
+		$postMeta	= get_post_meta( $postID , '', true);
+		$emailCC = $postMeta['_ccbcc_cc_emails'][0];
+		$emailBCC = $postMeta['_ccbcc_bcc_emails'][0];
+		$headers .= 'Cc: ' . $emailCC . "\r\n";
+    $headers .= 'Bcc: ' . $emailBCC;
     return $headers;
 }
-
