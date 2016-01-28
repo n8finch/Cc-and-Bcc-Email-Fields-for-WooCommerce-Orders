@@ -143,9 +143,9 @@ function ccbcc_meta_box_callback( $post ) {
  * https://github.com/woothemes/woocommerce/issues/6978
  -------------------------------------------*/
 
-add_filter( 'woocommerce_email_headers', 'add_myself_as_cc', 10, 2);
+add_filter( 'woocommerce_email_headers', 'add_cc_and_bcc_headers', 10, 2);
 
-function add_myself_as_cc($headers, $id, $object, $arg1 , $arg2) {
+function add_cc_and_bcc_headers($headers, $id, $object) {
     
 		$postID = get_the_ID();
 		$postMeta	= get_post_meta( $postID , '', true);
